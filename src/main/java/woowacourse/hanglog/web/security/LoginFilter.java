@@ -9,14 +9,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import woowacourse.hanglog.core.application.AuthService;
 import woowacourse.hanglog.core.domain.Session;
+import woowacourse.hanglog.web.security.token.TokenProvider;
 
 class LoginFilter extends AuthenticationProcessingFilter {
 
     private final AuthService authService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected LoginFilter(TokenProcessor tokenProcessor, AuthService authService) {
-        super("/api/v1/auth/login", tokenProcessor);
+    protected LoginFilter(TokenProvider tokenProvider, AuthService authService) {
+        super("/api/v1/auth/login", tokenProvider);
         this.authService = authService;
     }
 

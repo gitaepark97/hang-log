@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import woowacourse.hanglog.core.application.AuthService;
 import woowacourse.hanglog.core.domain.Session;
+import woowacourse.hanglog.web.security.token.TokenProvider;
 
 import java.util.Optional;
 
@@ -16,8 +17,8 @@ class ReissueTokenFilter extends AuthenticationProcessingFilter {
 
     private final AuthService authService;
 
-    protected ReissueTokenFilter(TokenProcessor tokenProcessor, AuthService authService) {
-        super("/api/v1/auth/reissue-token", tokenProcessor);
+    protected ReissueTokenFilter(TokenProvider tokenProvider, AuthService authService) {
+        super("/api/v1/auth/reissue-token", tokenProvider);
         this.authService = authService;
     }
 
@@ -32,7 +33,7 @@ class ReissueTokenFilter extends AuthenticationProcessingFilter {
         }
 
         try {
-            String sessionId = tokenProcessor.extractSessionId(refreshToken.get());
+            String sessionId = tokenProvider.extractSessionId(refreshToken.get());
             Session session = authService.getSession(sessionId);
 
             return new UsernamePasswordAuthenticationToken(session, null, null);

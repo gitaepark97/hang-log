@@ -1,4 +1,4 @@
-package woowacourse.hanglog.web.security;
+package woowacourse.hanglog.web.security.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-class TokenProcessor {
+class JWTProvider implements TokenProvider {
 
     private static final String MEMBER_ID = "memberId";
     private static final String SESSION_ID = "sessionId";
@@ -25,23 +25,26 @@ class TokenProcessor {
 
     private final SecretKey secretKey;
 
-    TokenProcessor(@Value("${jwt.secret}") String secret) {
+    JWTProvider(@Value("${jwt.secret}") String secret) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key()
             .build()
             .getAlgorithm());
     }
 
-    AuthToken issueAuthToken(Session session) {
+    @Override
+    public AuthToken issueAuthToken(Session session) {
         String accessToken = issueToken(Map.of(MEMBER_ID, session.memberId()), ACCESS_EXPIRATION);
         String refreshToken = issueToken(Map.of(SESSION_ID, session.id()), REFRESH_EXPIRATION);
         return new AuthToken(accessToken, refreshToken);
     }
 
-    Long extractMemberId(String accessToken) {
+    @Override
+    public Long extractMemberId(String accessToken) {
         return parseToken(accessToken).get(MEMBER_ID, Long.class);
     }
 
-    String extractSessionId(String refreshToken) {
+    @Override
+    public String extractSessionId(String refreshToken) {
         return parseToken(refreshToken).get(SESSION_ID, String.class);
     }
 

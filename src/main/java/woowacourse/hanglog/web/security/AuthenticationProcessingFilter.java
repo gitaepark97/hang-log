@@ -13,17 +13,19 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import woowacourse.hanglog.core.domain.Session;
 import woowacourse.hanglog.core.exception.ErrorCode;
 import woowacourse.hanglog.web.ApiResponse;
+import woowacourse.hanglog.web.security.token.AuthToken;
+import woowacourse.hanglog.web.security.token.TokenProvider;
 
 import java.io.IOException;
 import java.util.Map;
 
 abstract class AuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
-    protected final TokenProcessor tokenProcessor;
+    protected final TokenProvider tokenProvider;
 
-    protected AuthenticationProcessingFilter(String defaultFilterProcessesUrl, TokenProcessor tokenProcessor) {
+    protected AuthenticationProcessingFilter(String defaultFilterProcessesUrl, TokenProvider tokenProvider) {
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
-        this.tokenProcessor = tokenProcessor;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -43,7 +45,7 @@ abstract class AuthenticationProcessingFilter extends AbstractAuthenticationProc
     ) throws IOException {
         Session session = (Session) authResult.getPrincipal();
 
-        AuthToken authToken = tokenProcessor.issueAuthToken(session);
+        AuthToken authToken = tokenProvider.issueAuthToken(session);
 
         setSuccessResponse(response, authToken);
     }

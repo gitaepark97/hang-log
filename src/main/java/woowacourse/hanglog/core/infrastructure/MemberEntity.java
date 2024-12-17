@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLRestriction;
 import woowacourse.hanglog.core.domain.Member;
 import woowacourse.hanglog.core.domain.MemberStatus;
@@ -11,6 +13,8 @@ import woowacourse.hanglog.core.domain.MemberStatus;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity(name = "member")
+@DynamicInsert
+@DynamicUpdate
 @SQLRestriction("status = 'ACTIVE'")
 class MemberEntity {
 

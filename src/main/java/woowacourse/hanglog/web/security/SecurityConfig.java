@@ -10,13 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import woowacourse.hanglog.core.application.AuthService;
+import woowacourse.hanglog.web.security.token.TokenProvider;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
 
-    private final TokenProcessor tokenProcessor;
+    private final TokenProvider tokenProvider;
     private final AuthService authService;
 
     @Bean
@@ -29,9 +30,9 @@ class SecurityConfig {
                 .permitAll()
                 .anyRequest()
                 .authenticated())
-            .addFilterAt(new LoginFilter(tokenProcessor, authService), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new ReissueTokenFilter(tokenProcessor, authService), LoginFilter.class)
-            .addFilterBefore(new AccessTokenFilter(tokenProcessor), ReissueTokenFilter.class)
+            .addFilterAt(new LoginFilter(tokenProvider, authService), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new ReissueTokenFilter(tokenProvider, authService), LoginFilter.class)
+            .addFilterBefore(new AccessTokenFilter(tokenProvider), ReissueTokenFilter.class)
             .exceptionHandling(handler -> handler.authenticationEntryPoint(AuthenticationHandler.authenticationEntryPoint())
                 .accessDeniedHandler(AuthenticationHandler.accessDeniedHandler()))
             .build();
