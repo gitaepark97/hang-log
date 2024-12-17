@@ -33,4 +33,8 @@ public record Member(
         return this.nickname.equals(nickname);
     }
 
+    public Member login(Long currentTime) {
+        return toBuilder().lastLoginTime(currentTime).build();
+    }
+
 }

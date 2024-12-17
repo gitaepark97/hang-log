@@ -6,21 +6,22 @@ import org.springframework.stereotype.Component;
 import woowacourse.hanglog.core.application.port.ClockProvider;
 import woowacourse.hanglog.core.application.port.MemberRepository;
 import woowacourse.hanglog.core.application.port.RandomProvider;
+import woowacourse.hanglog.core.aspect.Retry;
 import woowacourse.hanglog.core.domain.Member;
-import woowacourse.hanglog.core.exception.ApplicationException;
 import woowacourse.hanglog.core.exception.ErrorCode;
 
 @RequiredArgsConstructor
 @Component
-class MemberProcessor {
+public class MemberProcessor {
 
-    private static final int MAX_TRY_COUNT = 5;
     private static final int DIGIT_CODE_LENGTH = 4;
+
 
     private final ClockProvider clockProvider;
     private final RandomProvider randomProvider;
     private final MemberRepository memberRepository;
 
+    @Retry(5)
     @Transactional
     Member createMember(String socialId, String nickname, String imageUrl) {
         String uniqueNickname = generateUniqueNickname(nickname);
@@ -30,34 +31,26 @@ class MemberProcessor {
 
     @Transactional
     void updateMember(Long memberId, String nickname, String imageUrl) {
-        Member existedMember = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND_USER));
+        Member existMember = memberRepository.findById(memberId)
+            .orElseThrow(ErrorCode.NOT_FOUND_USER::toException);
 
-        if (!existedMember.isSameNickname(nickname)) {
+        if (!existMember.isSameNickname(nickname)) {
             checkUniqueNickname(nickname);
         }
-        Member updatedMember = existedMember.update(nickname, imageUrl, clockProvider.millis());
+        Member updatedMember = existMember.update(nickname, imageUrl, clockProvider.millis());
         memberRepository.save(updatedMember);
+    }
+
+    private String generateUniqueNickname(String nickname) {
+        String nicknameWithDigitCode = nickname + generateRandomDigitCode();
+        checkUniqueNickname(nicknameWithDigitCode);
+        return nicknameWithDigitCode;
     }
 
     private void checkUniqueNickname(String nickname) {
         if (memberRepository.existsByNickname(nickname)) {
-            throw new ApplicationException(ErrorCode.DUPLICATED_MEMBER_NICKNAME);
+            throw ErrorCode.DUPLICATED_MEMBER_NICKNAME.toException();
         }
-    }
-
-    private String generateUniqueNickname(String nickname) {
-        int tryCount = 0;
-
-        while (tryCount < MAX_TRY_COUNT) {
-            String nicknameWithDigitCode = nickname + generateRandomDigitCode();
-            if (!memberRepository.existsByNickname(nicknameWithDigitCode)) {
-                return nicknameWithDigitCode;
-            }
-            tryCount++;
-        }
-
-        throw new ApplicationException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     private String generateRandomDigitCode() {

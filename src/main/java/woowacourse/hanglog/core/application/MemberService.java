@@ -12,7 +12,7 @@ public class MemberService {
     private final MemberProcessor memberProcessor;
 
     public Member getMember(Long memberId) {
-        return memberReader.getMember(memberId);
+        return memberReader.getMemberById(memberId);
     }
 
     public void updateMember(Long memberId, String nickname, String imageUrl) {

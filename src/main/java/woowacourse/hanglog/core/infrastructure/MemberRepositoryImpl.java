@@ -14,6 +14,11 @@ class MemberRepositoryImpl implements MemberRepository {
     private final MemberEntityRepository memberEntityRepository;
 
     @Override
+    public boolean existsById(Long id) {
+        return memberEntityRepository.existsById(id);
+    }
+
+    @Override
     public boolean existsByNickname(String nickname) {
         return memberEntityRepository.existsByNickname(nickname);
     }
