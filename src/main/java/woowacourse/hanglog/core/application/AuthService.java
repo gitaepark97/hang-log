@@ -22,4 +22,8 @@ public class AuthService {
         return sessionReader.getSessionById(sessionId);
     }
 
+    public void logout(Long memberId) {
+        sessionProcessor.deleteSession(memberId);
+    }
+
 }

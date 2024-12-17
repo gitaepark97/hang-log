@@ -1,5 +1,6 @@
 package woowacourse.hanglog.core.infrastructure;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import woowacourse.hanglog.core.application.port.SessionRepository;
@@ -23,6 +24,7 @@ class SessionRepositoryImpl implements SessionRepository {
         return sessionEntityRepository.save(SessionEntity.from(session)).toSession();
     }
 
+    @Transactional
     @Override
     public void deleteByMemberId(Long memberId) {
         sessionEntityRepository.deleteByMemberId(memberId);

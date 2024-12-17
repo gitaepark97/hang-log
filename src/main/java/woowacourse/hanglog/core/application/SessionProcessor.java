@@ -1,8 +1,8 @@
 package woowacourse.hanglog.core.application;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import woowacourse.hanglog.core.application.port.ClockProvider;
 import woowacourse.hanglog.core.application.port.SessionRepository;
 import woowacourse.hanglog.core.application.port.UUIDProvider;
@@ -22,8 +22,8 @@ class SessionProcessor {
         Session newSession = Session.of(uuidProvider.generateRandomUUID(), memberId, clockProvider.millis());
         return sessionRepository.save(newSession);
     }
-
-    private void deleteSession(Long memberId) {
+    
+    void deleteSession(Long memberId) {
         sessionRepository.deleteByMemberId(memberId);
     }
 
