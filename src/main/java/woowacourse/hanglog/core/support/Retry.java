@@ -1,4 +1,4 @@
-package woowacourse.hanglog.core.aspect;
+package woowacourse.hanglog.core.support;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

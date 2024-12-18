@@ -49,7 +49,7 @@ public class MemberProcessor {
         }
     }
 
-    private Member createMember(String socialId, String nickname, String imageUrl) {
+    Member createMember(String socialId, String nickname, String imageUrl) {
         String uniqueNickname = nicknameGenerator.generateUniqueNickname(nickname);
         Member newMember = Member.of(socialId, uniqueNickname, imageUrl, clockProvider.millis());
         return memberRepository.save(newMember);

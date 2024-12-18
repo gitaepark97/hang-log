@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import woowacourse.hanglog.core.application.port.MemberRepository;
 import woowacourse.hanglog.core.application.port.RandomProvider;
-import woowacourse.hanglog.core.aspect.Retry;
 import woowacourse.hanglog.core.exception.ErrorCode;
+import woowacourse.hanglog.core.support.Retry;
 
 @RequiredArgsConstructor
 @Component

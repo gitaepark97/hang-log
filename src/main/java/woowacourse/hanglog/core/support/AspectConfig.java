@@ -1,4 +1,4 @@
-package woowacourse.hanglog.core.aspect;
+package woowacourse.hanglog.core.support;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
