@@ -24,8 +24,7 @@ class TripProcessor {
     void createTrip(Long memberId, LocalDate startDate, LocalDate endDate, List<City> cities) {
         Trip trip = Trip.of(memberId, generateInitTitle(cities), startDate, endDate, clockProvider.millis());
         Trip savedTrip = tripRepository.save(trip);
-
-        tripRepository.saveCities(savedTrip.id(), cities);
+        tripRepository.saveTripCities(savedTrip, cities);
     }
 
     private String generateInitTitle(List<City> cities) {

@@ -28,6 +28,16 @@ class CityEntity {
 
     private BigDecimal longitude;
 
+    static CityEntity from(City city) {
+        return new CityEntity(
+            city.id(),
+            city.name(),
+            city.country(),
+            city.latitude(),
+            city.longitude()
+        );
+    }
+
     City toCity() {
         return City.builder()
             .id(id)
