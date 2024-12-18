@@ -16,7 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import woowacourse.hanglog.web.security.token.TokenProvider;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class AccessTokenFilter extends OncePerRequestFilter {
@@ -31,14 +30,14 @@ class AccessTokenFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
-        Optional<String> accessToken = obtainAccessToken(request);
-        if (accessToken.isEmpty()) {
+        String accessToken = obtainAccessToken(request);
+        if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            Long userId = tokenProvider.extractMemberId(accessToken.get());
+            Long userId = tokenProvider.extractMemberId(accessToken);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userId, null, null);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -49,12 +48,12 @@ class AccessTokenFilter extends OncePerRequestFilter {
         }
     }
 
-    private Optional<String> obtainAccessToken(HttpServletRequest request) {
+    private String obtainAccessToken(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (!StringUtils.hasText(authHeader) || !authHeader.startsWith(BEARER)) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(authHeader.substring(BEARER.length()));
+        return authHeader.substring(BEARER.length());
     }
 
 }

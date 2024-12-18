@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import woowacourse.hanglog.core.exception.ApplicationException;
 
-import java.util.Optional;
-
 @ControllerAdvice
 class ApiResponseHandler implements ResponseBodyAdvice<Object> {
 
@@ -47,14 +45,14 @@ class ApiResponseHandler implements ResponseBodyAdvice<Object> {
             return ApiResponse.of(status, responseEntity.getBody());
         }
 
-        HttpStatus status = obtainResponseStatus(returnType).orElse(HttpStatus.OK);
+        HttpStatus status = obtainResponseStatus(returnType);
         response.setStatusCode(status);
         return ApiResponse.of(status, body);
     }
 
-    private Optional<HttpStatus> obtainResponseStatus(MethodParameter returnType) {
+    private HttpStatus obtainResponseStatus(MethodParameter returnType) {
         ResponseStatus responseStatus = returnType.getMethodAnnotation(ResponseStatus.class);
-        return responseStatus == null ? Optional.empty() : Optional.of(responseStatus.value());
+        return responseStatus == null ? HttpStatus.OK : responseStatus.value();
     }
 
 }

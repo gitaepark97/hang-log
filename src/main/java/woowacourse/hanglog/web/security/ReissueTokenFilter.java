@@ -11,8 +11,6 @@ import woowacourse.hanglog.core.application.AuthService;
 import woowacourse.hanglog.core.domain.Session;
 import woowacourse.hanglog.web.security.token.TokenProvider;
 
-import java.util.Optional;
-
 class ReissueTokenFilter extends AuthenticationProcessingFilter {
 
     private final AuthService authService;
@@ -27,13 +25,13 @@ class ReissueTokenFilter extends AuthenticationProcessingFilter {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws AuthenticationException {
-        Optional<String> refreshToken = extractRefreshToken(request);
-        if (refreshToken.isEmpty()) {
+        String refreshToken = extractRefreshToken(request);
+        if (refreshToken == null) {
             throw new BadCredentialsException("Invalid refresh token");
         }
 
         try {
-            String sessionId = tokenProvider.extractSessionId(refreshToken.get());
+            String sessionId = tokenProvider.extractSessionId(refreshToken);
             Session session = authService.getSession(sessionId);
 
             return new UsernamePasswordAuthenticationToken(session, null, null);
@@ -42,13 +40,13 @@ class ReissueTokenFilter extends AuthenticationProcessingFilter {
         }
     }
 
-    private Optional<String> extractRefreshToken(HttpServletRequest request) {
+    private String extractRefreshToken(HttpServletRequest request) {
         for (Cookie cookie : request.getCookies()) {
             if (cookie.getName().equals("refreshToken")) {
-                return Optional.of(cookie.getValue());
+                return cookie.getValue();
             }
         }
-        return Optional.empty();
+        return null;
     }
 
 }
