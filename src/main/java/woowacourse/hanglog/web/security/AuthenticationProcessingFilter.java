@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import woowacourse.hanglog.core.domain.Session;
+import woowacourse.hanglog.core.auth.domain.Session;
 import woowacourse.hanglog.core.exception.ErrorCode;
 import woowacourse.hanglog.web.ApiResponse;
 import woowacourse.hanglog.web.security.token.AuthToken;

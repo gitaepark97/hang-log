@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import woowacourse.hanglog.core.application.AuthService;
+import woowacourse.hanglog.core.auth.application.AuthService;
 import woowacourse.hanglog.web.security.token.TokenProvider;
 
 @RequiredArgsConstructor

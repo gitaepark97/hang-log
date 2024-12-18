@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import woowacourse.hanglog.core.application.AuthService;
+import woowacourse.hanglog.core.auth.application.AuthService;
 
 @RequiredArgsConstructor
 @RestController

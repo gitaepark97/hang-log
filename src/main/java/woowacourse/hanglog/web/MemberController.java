@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import woowacourse.hanglog.core.application.MemberService;
+import woowacourse.hanglog.core.member.application.MemberService;
 
 @RequiredArgsConstructor
 @RestController

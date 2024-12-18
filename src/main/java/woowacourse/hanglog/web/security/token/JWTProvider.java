@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import woowacourse.hanglog.core.domain.Session;
+import woowacourse.hanglog.core.auth.domain.Session;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

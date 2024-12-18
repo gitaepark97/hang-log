@@ -1,6 +1,6 @@
 package woowacourse.hanglog.web;
 
-import woowacourse.hanglog.core.domain.TripWithCities;
+import woowacourse.hanglog.core.trip.domain.TripWithCities;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,6 +1,6 @@
 package woowacourse.hanglog.web.security.token;
 
-import woowacourse.hanglog.core.domain.Session;
+import woowacourse.hanglog.core.auth.domain.Session;
 
 public interface TokenProvider {
 

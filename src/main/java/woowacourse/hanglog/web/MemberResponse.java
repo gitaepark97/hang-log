@@ -1,6 +1,6 @@
 package woowacourse.hanglog.web;
 
-import woowacourse.hanglog.core.domain.Member;
+import woowacourse.hanglog.core.member.domain.Member;
 
 abstract class MemberResponse {
 

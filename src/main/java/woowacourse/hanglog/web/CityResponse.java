@@ -1,6 +1,6 @@
 package woowacourse.hanglog.web;
 
-import woowacourse.hanglog.core.domain.City;
+import woowacourse.hanglog.core.trip.domain.City;
 
 abstract class CityResponse {
 
@@ -8,7 +8,7 @@ abstract class CityResponse {
         Long id,
         String name
     ) {
-        
+
         static SimpleCity from(City city) {
             return new SimpleCity(city.id(), String.format("%s(%s)", city.name(), city.country()));
         }

@@ -7,8 +7,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import woowacourse.hanglog.core.application.AuthService;
-import woowacourse.hanglog.core.domain.Session;
+import woowacourse.hanglog.core.auth.application.AuthService;
+import woowacourse.hanglog.core.auth.domain.Session;
 import woowacourse.hanglog.web.security.token.TokenProvider;
 
 class ReissueTokenFilter extends AuthenticationProcessingFilter {
