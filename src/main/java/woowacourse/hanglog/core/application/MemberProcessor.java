@@ -11,7 +11,7 @@ import woowacourse.hanglog.core.exception.ErrorCode;
 @RequiredArgsConstructor
 @Component
 public class MemberProcessor {
-    
+
     private final ClockProvider clockProvider;
     private final MemberRepository memberRepository;
     private final NicknameGenerator nicknameGenerator;
@@ -26,14 +26,21 @@ public class MemberProcessor {
 
     @Transactional
     void updateMember(Long memberId, String nickname, String imageUrl) {
-        Member existMember = memberRepository.findById(memberId)
-            .orElseThrow(ErrorCode.NOT_FOUND_USER::toException);
+        Member existMember = getMemberById(memberId);
 
         if (!existMember.isSameNickname(nickname)) {
             checkUniqueNickname(nickname);
         }
         Member updatedMember = existMember.update(nickname, imageUrl, clockProvider.millis());
         memberRepository.save(updatedMember);
+    }
+
+    @Transactional
+    void deleteMember(Long memberId) {
+        Member existMember = getMemberById(memberId);
+
+        Member deletedMember = existMember.delete(clockProvider.millis());
+        memberRepository.save(deletedMember);
     }
 
     private void checkUniqueNickname(String nickname) {
@@ -46,6 +53,11 @@ public class MemberProcessor {
         String uniqueNickname = nicknameGenerator.generateUniqueNickname(nickname);
         Member newMember = Member.of(socialId, uniqueNickname, imageUrl, clockProvider.millis());
         return memberRepository.save(newMember);
+    }
+
+    private Member getMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(ErrorCode.NOT_FOUND_USER::toException);
     }
 
 }

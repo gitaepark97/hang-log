@@ -11,7 +11,8 @@ public record Member(
     MemberStatus status,
     Long lastLoginTime,
     Long createTime,
-    Long updateTime
+    Long updateTime,
+    Long deleteTime
 ) {
 
     public static Member of(String socialId, String nickname, String imageUrl, Long currentTime) {
@@ -35,6 +36,10 @@ public record Member(
 
     public Member login(Long currentTime) {
         return toBuilder().lastLoginTime(currentTime).build();
+    }
+
+    public Member delete(Long currentTime) {
+        return toBuilder().deleteTime(currentTime).build();
     }
 
 }

@@ -42,6 +42,8 @@ class MemberEntity {
     @Column(nullable = false)
     private Long updateTime;
 
+    private Long deleteTime;
+
     static MemberEntity from(Member member) {
         return new MemberEntity(
             member.id(),
@@ -51,7 +53,8 @@ class MemberEntity {
             member.status(),
             member.lastLoginTime(),
             member.createTime(),
-            member.updateTime()
+            member.updateTime(),
+            member.deleteTime()
         );
     }
 
@@ -65,6 +68,7 @@ class MemberEntity {
             .lastLoginTime(lastLoginTime)
             .createTime(createTime)
             .updateTime(updateTime)
+            .deleteTime(deleteTime)
             .build();
     }
 

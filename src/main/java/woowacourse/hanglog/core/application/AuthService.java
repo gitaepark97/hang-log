@@ -1,5 +1,6 @@
 package woowacourse.hanglog.core.application;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import woowacourse.hanglog.core.domain.Member;
@@ -24,6 +25,12 @@ public class AuthService {
 
     public void logout(Long memberId) {
         sessionProcessor.deleteSession(memberId);
+    }
+
+    @Transactional
+    public void withdraw(Long memberId) {
+        sessionProcessor.deleteSession(memberId);
+        memberProcessor.deleteMember(memberId);
     }
 
 }

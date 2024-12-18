@@ -2,6 +2,7 @@ package woowacourse.hanglog.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,11 @@ class AuthController {
     @PostMapping("/logout")
     void logout(@AuthenticationPrincipal Long memberId) {
         authService.logout(memberId);
+    }
+
+    @DeleteMapping("/withdraw")
+    void withdraw(@AuthenticationPrincipal Long memberId) {
+        authService.withdraw(memberId);
     }
 
 }
