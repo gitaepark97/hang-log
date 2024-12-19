@@ -14,6 +14,10 @@ class CityReader {
 
     private final CityRepository cityRepository;
 
+    List<City> searchCitiesByName(String name) {
+        return cityRepository.searchAllByName(name);
+    }
+
     List<City> getCitiesInIds(List<Long> cityIds) {
         return cityRepository.findAllByIdIn(cityIds);
     }

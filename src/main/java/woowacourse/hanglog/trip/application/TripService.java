@@ -18,6 +18,10 @@ public class TripService {
     private final TripReader tripReader;
     private final TripProcessor tripProcessor;
 
+    public List<City> searchCitiesByName(String name) {
+        return cityReader.searchCitiesByName(name);
+    }
+
     public Page<TripWithCities> getMemberTripWithCities(Long memberId, Pageable pageable) {
         return tripReader.getMemberTrips(memberId, pageable).map(trip -> {
             List<City> cities = cityReader.getCitiesByTrip(trip);
