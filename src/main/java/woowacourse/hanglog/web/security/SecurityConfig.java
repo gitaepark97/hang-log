@@ -9,16 +9,16 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import woowacourse.hanglog.core.auth.application.AuthService;
-import woowacourse.hanglog.web.security.token.TokenProvider;
+import woowacourse.hanglog.member.application.MemberService;
+import woowacourse.hanglog.web.security.token.TokenProcessor;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
 
-    private final TokenProvider tokenProvider;
-    private final AuthService authService;
+    private final TokenProcessor tokenProcessor;
+    private final MemberService memberService;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -30,9 +30,9 @@ class SecurityConfig {
                 .permitAll()
                 .anyRequest()
                 .authenticated())
-            .addFilterAt(new LoginFilter(tokenProvider, authService), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new ReissueTokenFilter(tokenProvider, authService), LoginFilter.class)
-            .addFilterBefore(new AccessTokenFilter(tokenProvider), ReissueTokenFilter.class)
+            .addFilterAt(new LoginFilter(tokenProcessor, memberService), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new ReissueTokenFilter(tokenProcessor, memberService), LoginFilter.class)
+            .addFilterBefore(new AccessTokenFilter(tokenProcessor), ReissueTokenFilter.class)
             .exceptionHandling(handler -> handler.authenticationEntryPoint(AuthenticationHandler.authenticationEntryPoint())
                 .accessDeniedHandler(AuthenticationHandler.accessDeniedHandler()))
             .build();

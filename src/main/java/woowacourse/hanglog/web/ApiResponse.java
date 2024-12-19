@@ -1,7 +1,7 @@
 package woowacourse.hanglog.web;
 
 import org.springframework.http.HttpStatus;
-import woowacourse.hanglog.core.exception.ApplicationException;
+import woowacourse.hanglog.support.exception.ApplicationException;
 
 public record ApiResponse<T>(
     HttpStatus status,

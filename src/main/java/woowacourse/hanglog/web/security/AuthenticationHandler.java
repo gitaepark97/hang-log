@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import woowacourse.hanglog.core.exception.ErrorCode;
+import woowacourse.hanglog.support.exception.ErrorCode;
 import woowacourse.hanglog.web.ApiResponse;
 
 import java.io.IOException;

@@ -10,7 +10,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import woowacourse.hanglog.core.exception.ApplicationException;
+import woowacourse.hanglog.support.exception.ApplicationException;
 
 @ControllerAdvice
 class ApiResponseHandler implements ResponseBodyAdvice<Object> {

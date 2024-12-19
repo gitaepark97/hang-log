@@ -7,17 +7,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import woowacourse.hanglog.core.auth.application.AuthService;
-import woowacourse.hanglog.core.auth.domain.Session;
-import woowacourse.hanglog.web.security.token.TokenProvider;
+import woowacourse.hanglog.member.application.MemberService;
+import woowacourse.hanglog.member.domain.Session;
+import woowacourse.hanglog.web.security.token.TokenProcessor;
 
 class ReissueTokenFilter extends AuthenticationProcessingFilter {
 
-    private final AuthService authService;
+    private final MemberService memberService;
 
-    protected ReissueTokenFilter(TokenProvider tokenProvider, AuthService authService) {
-        super("/api/v1/auth/reissue-token", tokenProvider);
-        this.authService = authService;
+    protected ReissueTokenFilter(TokenProcessor tokenProcessor, MemberService memberService) {
+        super("/api/v1/auth/reissue-token", tokenProcessor);
+        this.memberService = memberService;
     }
 
     @Override
@@ -31,8 +31,8 @@ class ReissueTokenFilter extends AuthenticationProcessingFilter {
         }
 
         try {
-            String sessionId = tokenProvider.extractSessionId(refreshToken);
-            Session session = authService.getSession(sessionId);
+            String sessionId = tokenProcessor.extractSessionId(refreshToken);
+            Session session = memberService.getSession(sessionId);
 
             return new UsernamePasswordAuthenticationToken(session, null, null);
         } catch (Exception ignored) {

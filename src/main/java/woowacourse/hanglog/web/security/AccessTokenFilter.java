@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import woowacourse.hanglog.web.security.token.TokenProvider;
+import woowacourse.hanglog.web.security.token.TokenProcessor;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ class AccessTokenFilter extends OncePerRequestFilter {
 
     private static final String BEARER = "Bearer ";
 
-    private final TokenProvider tokenProvider;
+    private final TokenProcessor token;
 
     @Override
     protected void doFilterInternal(
@@ -37,7 +37,7 @@ class AccessTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-            Long userId = tokenProvider.extractMemberId(accessToken);
+            Long userId = token.extractMemberId(accessToken);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userId, null, null);
             SecurityContextHolder.getContext().setAuthentication(authentication);

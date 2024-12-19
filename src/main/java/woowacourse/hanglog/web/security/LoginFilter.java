@@ -7,18 +7,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import woowacourse.hanglog.core.auth.application.AuthService;
-import woowacourse.hanglog.core.auth.domain.Session;
-import woowacourse.hanglog.web.security.token.TokenProvider;
+import woowacourse.hanglog.member.application.MemberService;
+import woowacourse.hanglog.member.domain.Session;
+import woowacourse.hanglog.web.security.token.TokenProcessor;
 
 class LoginFilter extends AuthenticationProcessingFilter {
 
-    private final AuthService authService;
+    private final MemberService memberService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected LoginFilter(TokenProvider tokenProvider, AuthService authService) {
-        super("/api/v1/auth/login", tokenProvider);
-        this.authService = authService;
+    protected LoginFilter(TokenProcessor tokenProcessor, MemberService memberService) {
+        super("/api/v1/auth/login", tokenProcessor);
+        this.memberService = memberService;
     }
 
     @Override
@@ -29,7 +29,7 @@ class LoginFilter extends AuthenticationProcessingFilter {
         try {
             LoginRequest loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
 
-            Session session = authService.login(loginRequest.socialId(), loginRequest.nickname(), loginRequest.imageUrl());
+            Session session = memberService.login(loginRequest.socialId(), loginRequest.nickname(), loginRequest.imageUrl());
 
             return new UsernamePasswordAuthenticationToken(session, null, null);
         } catch (Exception ignored) {
