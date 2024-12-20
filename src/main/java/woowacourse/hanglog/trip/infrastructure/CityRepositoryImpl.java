@@ -23,8 +23,7 @@ class CityRepositoryImpl implements CityRepository {
         QCityEntity cityEntity = QCityEntity.cityEntity;
 
         BooleanBuilder builder = new BooleanBuilder();
-        builder.or(cityEntity.name.startsWithIgnoreCase(name));
-        builder.or(cityEntity.country.startsWithIgnoreCase(name));
+        builder.andAnyOf(cityEntity.name.startsWithIgnoreCase(name), cityEntity.country.startsWithIgnoreCase(name));
 
         return query.select(cityEntity)
             .from(cityEntity)
