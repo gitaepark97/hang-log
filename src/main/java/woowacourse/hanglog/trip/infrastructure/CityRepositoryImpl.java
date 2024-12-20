@@ -42,11 +42,18 @@ class CityRepositoryImpl implements CityRepository {
 
     @Override
     public List<City> findAllByTrip(Trip trip) {
-        List<Long> cityIds = tripCityEntityRepository.findAllByTripId(trip.id())
+        QCityEntity cityEntity = QCityEntity.cityEntity;
+        QTripCityEntity tripCityEntity = QTripCityEntity.tripCityEntity;
+        return query
+            .select(cityEntity)
+            .from(tripCityEntity)
+            .join(cityEntity)
+            .on(tripCityEntity.cityId.eq(cityEntity.id))
+            .where(tripCityEntity.tripId.eq(trip.id()))
+            .fetch()
             .stream()
-            .map(TripCityEntity::getCityId)
+            .map(CityEntity::toCity)
             .toList();
-        return findAllByIdIn(cityIds);
     }
 
 }
