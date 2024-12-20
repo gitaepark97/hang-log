@@ -1,6 +1,8 @@
 package woowacourse.hanglog.trip.infrastructure;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,21 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity(name = "trip_city")
+@IdClass(TripCityId.class)
 class TripCityEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(optional = false)
-    private TripEntity trip;
+    private Long tripId;
 
     @Getter
-    @ManyToOne(optional = false)
-    private CityEntity city;
+    @Id
+    private Long cityId;
 
-    static TripCityEntity of(TripEntity trip, CityEntity city) {
-        return new TripCityEntity(null, trip, city);
+    static TripCityEntity of(Long tripId, Long cityId) {
+        return new TripCityEntity(tripId, cityId);
     }
 
 }

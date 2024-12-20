@@ -29,9 +29,8 @@ class TripRepositoryImpl implements TripRepository {
 
     @Override
     public void saveTripCities(Trip trip, List<City> cities) {
-        TripEntity tripEntity = TripEntity.from(trip);
         List<TripCityEntity> tripCities = cities.stream()
-            .map(city -> TripCityEntity.of(tripEntity, CityEntity.from(city)))
+            .map(city -> TripCityEntity.of(trip.id(), city.id()))
             .toList();
         tripCityEntityRepository.saveAll(tripCities);
     }
